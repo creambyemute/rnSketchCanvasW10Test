@@ -46,6 +46,8 @@ const App = () => {
     NativeModules.FilePicker.pickFile()
       .then((result: string) => {
         setHasPickedFile(true);
+        // you can try without resizeImage by just removing this and passing the pickFile result as filename to localSourceImage
+        // resizeImage(path, newMaxSide, quality, rotation, onlyScaleDown)
         NativeModules.ImageResizer.resizeImage(result, 1920, 80, 0, true)
           .then((resizedImagePath: string) => {
             setPickedFilePath(resizedImagePath);
@@ -96,8 +98,6 @@ const App = () => {
     setSketchRef(ref);
   };
 
-  // localSourceImage={localSourceImage}
-  // onSketchSaved={onImageSaved}
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -108,9 +108,9 @@ const App = () => {
             justifyContent: 'space-between',
           }}>
           {hasPickedFile ? (
-            <Button title={'Bild speichern'} onPress={onPressSaveImage} />
+            <Button title={'Save image'} onPress={onPressSaveImage} />
           ) : (
-            <Button title={'Bild Auswählen'} onPress={onPressChooseImage} />
+            <Button title={'Pick image'} onPress={onPressChooseImage} />
           )}
           {localSourceImage && pickedFilePath && pickedFilePath.length > 0 ? (
             <SketchCanvas
@@ -123,7 +123,7 @@ const App = () => {
             React.Fragment
           )}
           {hasPickedFile ? (
-            <Button title={'Bild entfernen'} onPress={onPressClearImage} />
+            <Button title={'Reset'} onPress={onPressClearImage} />
           ) : (
             React.Fragment
           )}
